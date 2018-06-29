@@ -8,7 +8,7 @@ class MaxIntSet
   end
 
   def insert(num)
-    raise "Out of bounds" if num > max || num < 0
+    is_valid?(num)
     @store[num] = true
     true
   end
@@ -24,6 +24,7 @@ class MaxIntSet
   private
 
   def is_valid?(num)
+    raise "Out of bounds" if num > max || num < 0
   end
 
   def validate!(num)
@@ -43,7 +44,7 @@ class IntSet
   end
 
   def remove(num)
-    self[num].delete(num)
+    self[num].delete(num) if self.include?(num)
   end
 
   def include?(num)
@@ -71,11 +72,9 @@ class ResizingIntSet
 
   def insert(num)
     return false if self.include?(num)
-
     self[num] << num
     @count += 1
-    resize! if num_buckets < @count
-
+    resize! if num_buckets <= @count
   end
 
   def remove(num)
